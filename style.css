@@ -1,0 +1,123 @@
+
+#b {
+	margin: 0;
+    font-family: Arial, sans-serif;
+    background: url("kerak.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    text-align: center;
+}
+.container {
+	width: 300px;
+	margin: 100px auto;
+	padding: 20px;
+
+	background: rgba(255, 255, 255, 0.2); /* transparent white */
+
+	backdrop-filter: blur(10px); /* THIS creates blur */
+	-webkit-backdrop-filter: blur(10px); /* for Safari */
+
+	border-radius: 10px;
+
+	border: 1px solid rgba(255, 255, 255, 0.3);
+
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+
+	text-align: center;
+}
+input {
+	cursor: text;
+}
+
+button {
+	cursor: pointer;
+}
+
+input:focus {
+	outline: none;
+	border: 2px solid #007bff;
+}
+input {
+	margin: 4px 0;
+}
+input {
+	border-radius: 6px;
+}
+input {
+	transition: 0.2s ease;
+}
+
+input:focus {
+	transform: translateY(-3px) scale(1.03);
+	box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+	outline: none;
+	border: 2px solid #007bff;
+}
+input {
+	transition: 0.2s ease;
+	border: 2px solid #333;
+}
+
+input:focus {
+	outline: none;
+	border-color: #a855f7;
+
+	box-shadow: 
+		0 0 5px #a855f7,
+		0 0 10px #a855f7,
+		0 0 20px #a855f7;
+
+	transform: translateY(-3px) scale(1.03);
+}
+button {
+	transition: 0.2s ease;
+	border: none;
+	background: white;
+	color: black;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 6px;
+}
+
+/* When clicked */
+button:active {
+	transform: translateY(3px) scale(0.97);
+
+	box-shadow: 
+		0 0 5px #ffff00,
+		0 0 10px #ffff00,
+		0 0 20px #ffff00;
+
+	background: #222;
+}
+.user-card {
+	width: 300px;
+	margin: 10px auto;
+	padding: 15px;
+
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(10px);
+
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+
+	box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+
+	color: white;
+
+	display: flex;
+	flex-direction: column; /* 🔥 stack vertically */
+	gap: 5px; /* spacing between lines */
+
+	text-align: left;
+}
+
+.user-card button {
+	background: #ff4d4d;
+	border: none;
+	color: white;
+	padding: 5px 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 8px;
+}

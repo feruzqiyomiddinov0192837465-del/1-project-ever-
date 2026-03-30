@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Finder</title>
+<style>
+/* ====== BODY & CONTAINER ====== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url("kerak.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    text-align: center;
+}
+
+.container {
+    width: 400px;
+    margin: 50px auto;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 20px;
+    border: 2px solid #333;
+    transition: 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #a855f7;
+    box-shadow: 0 0 5px #a855f7, 0 0 10px #a855f7, 0 0 20px #a855f7;
+    transform: translateY(-3px) scale(1.03);
+}
+
+button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    background: white;
+    color: black;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+button:active {
+    transform: translateY(3px) scale(0.97);
+    background: #222;
+    color: white;
+}
+
+.song {
+    background: rgba(255,255,255,0.1);
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+.song:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.song img {
+    width: 100px;
+    border-radius: 8px;
+}
+
+audio {
+    width: 100%;
+    margin-top: 5px;
+}
+
+#welcome {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Favorite button inside song */
+.song button {
+    background: #ff4d4d;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div id="welcome">🎵 Welcome! Please register first.</div>
+    <input id="search" type="text" placeholder="Search song...">
+    <button onclick="searchMusic()">Search</button>
+    <div id="results"></div>
+</div>
+
+<script>
+// ====== Get last registered user ======
+let users = JSON.parse(localStorage.getItem("users")) || [];
+if (users.length > 0) {
+    const lastUser = users[users.length - 1];
+    document.getElementById("welcome").innerHTML = 
+        `🎵 Welcome, <b>${lastUser.name}</b>! Enjoy your music.`;
+}
+
+// ====== Search function ======
+function searchMusic() {
+    const query = document.getElementById("search").value.trim();
+    const results = document.getElementById("results");
+
+    if (!query) {
+        results.innerHTML = "<p>Type something to search!</p>";
+        return;
+    }
+
+    results.innerHTML = "<p>Loading...</p>";
+
+    fetch(`https://itunes.apple.com/search?term=${query}&entity=song`)
+    .then(res => res.json())
+    .then(data => {
+        if (data.results.length === 0) {
+            results.innerHTML = "<p>No results found 😢</p>";
+        } else {
+            renderSongs(data.results);
+        }
+    });
+}
+
+// ====== Render songs ======
+function renderSongs(songs) {
+    const results = document.getElementById("results");
+    results.innerHTML = "";
+
+    songs.forEach(song => {
+        if (!song.previewUrl) return;
+
+        const songDiv = document.createElement("div");
+        songDiv.className = "song";
+
+        songDiv.innerHTML = `
+            <img src="${song.artworkUrl100}">
+            <p><b>${song.trackName}</b></p>
+            <p>${song.artistName}</p>
+            <audio controls>
+                <source src="${song.previewUrl}" type="audio/mpeg">
+            </audio>
+            <button onclick='saveFav(${JSON.stringify(song)})'>❤️ Save</button>
+        `;
+
+        results.appendChild(songDiv);
+    });
+}
+
+// ====== Save favorite songs ======
+function saveFav(song) {
+    let favs = JSON.parse(localStorage.getItem("favs")) || [];
+    favs.push(song);
+    localStorage.setItem("favs", JSON.stringify(favs));
+    alert(`${song.trackName} saved to favorites!`);
+}
+
+// ====== Press Enter to search ======
+document.getElementById("search").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") searchMusic();
+});
+
+// ====== Optional: Block access if no user ======
+if (!users || users.length === 0) {
+    alert("Please register first!");
+    window.location.href = "index2.html";
+}
+
+</script>
+
+</body>
+</html>
